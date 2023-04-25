@@ -1,7 +1,9 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const ejsMate = require('ejs-mate');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+
 
 require('dotenv').config();
 
@@ -10,12 +12,24 @@ const routes = require('./routes/index')
 
 const port = process.env.PORT || 3000;
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
+app.use(session({
+    secret: process.env.SECRET_KEY_SESSION,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
 
 // cấu hình ejs
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-app.engine('ejs', ejsMate);
  
 // kết nối đến mongodb
 ConnectDB(process.env.CONNECTION_STRING);  
@@ -24,7 +38,7 @@ ConnectDB(process.env.CONNECTION_STRING);
 routes(app);
 
 app.get('/', (req, res) => {
-    res.render('user/home.ejs');
+    res.render('user/login.ejs');
 })
 
 app.listen(port, () => {
