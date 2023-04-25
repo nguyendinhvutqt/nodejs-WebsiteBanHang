@@ -30,9 +30,9 @@ exports.loginUser = async (req, res) => {
     
     // kiểm tra email và mật khẩu có khớp trong db không
     if (user && bcrypt.compareSync(password, user.password)) {
-        return res.render('user/index', 
-            { user: user }
-        )
+        req.session.isLoggedIn = true;
+        req.session.user = user;
+        return res.redirect('home');
     } else {
         return res.render('user/login', 
             { error: 'Email hoặc mật khẩu không chính xác!' }
@@ -104,4 +104,16 @@ exports.registerUser = async (req, res) => {
     } catch (error) {
         res.render('user/register', { error: 'Đăng ký thất bại. Vui lòng thử lại.' });
     }
+}
+
+exports.getHomePage = (req, res) => {
+    return res.render('user/home')
+}
+
+exports.logout = (req, res) => {
+    // Xoá tất cả các session của người dùng
+  req.session.destroy();
+  
+  // Chuyển hướng người dùng đến trang chủ
+  res.redirect('home');
 }

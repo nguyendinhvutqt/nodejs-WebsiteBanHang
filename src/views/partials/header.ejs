@@ -20,8 +20,11 @@
             <ul class="list-main">
               <li><i class="ti-location-pin"></i> Store location</li>
               <li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li>
-              <li><i class="ti-user"></i> <a href="#">My account</a></li>
-              <li><i class="ti-power-off"></i><a href="login.html#">Login</a></li>
+              <% if (currentUser) { %>
+                <span>Welcome <%= currentUser.name %></span>
+              <% } else { %>
+                <li><i class="ti-power-off"></i><a href="/user/sign-in">Login</a></li>
+              <% } %> 
             </ul>
           </div>
           <!-- End Top Right -->
@@ -73,11 +76,17 @@
         <div class="col-lg-2 col-md-3 col-12">
           <div class="right-bar">
             <!-- Search Form -->
-            <div class="sinlge-bar">
-              <a href="#" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+            <div class="sinlge-bar shopping">
+              <a href="#" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+              <!-- Shopping Item -->
+              <div class="shopping-item">
+                <a href="">Thông tin cá nhân</a>
+                <a href="/user/logout">Đăng xuất</a>
+              </div>
+              <!--/ End Shopping Item -->
             </div>
             <div class="sinlge-bar">
-              <a href="#" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+              <a href="#" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
             </div>
             <div class="sinlge-bar shopping">
               <a href="#" class="single-icon"><i class="ti-bag"></i> <span class="total-count">2</span></a>
@@ -226,4 +235,4 @@
   </div>
   <!--/ End Header Inner -->
 </header>
-<!--/ End Header -->
+<!--/ End Header --> 
