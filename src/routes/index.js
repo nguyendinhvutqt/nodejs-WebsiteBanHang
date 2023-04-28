@@ -1,4 +1,6 @@
-const userRouter = require('./user.routes')
+const userRouter = require('./user.routes');
+const categoryRouter = require('./category.routes');
+
 
 const routes = (app) => {
 
@@ -11,9 +13,13 @@ const routes = (app) => {
 
     // route user
     app.use('/user', userRouter)
+    app.use('/admin/category', categoryRouter);
     
     app.get('/', (req, res) => {
         res.render('user/home')
+    })
+    app.get('/admin', (req, res) => {
+        res.render('admin/home')
     })
 }
 

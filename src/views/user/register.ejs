@@ -5,12 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng kí tài khoản</title>
-    <link rel="stylesheet" href="/css/login.css" />
+    <link rel="stylesheet" href="/user/css/login.css" />
 </head>
 <body>
     <div class="login-container">
         <div class="form">
             <h2>ĐĂNG KÍ NGƯỜI DÙNG</h2>
+            <% if (error) { %>
+                <div class="error" role="alert">
+                  <%= error %>
+                </div>
+              <% } %>
             <form method="post" action="/user/sign-up">
                 <label>Email:</label>
                 <input 
@@ -23,6 +28,18 @@
                     type="text"
                     name="name"
                     placeholder='Vui lòng nhập họ và tên'
+                />
+                <label>Số điện thoại:</label>
+                <input 
+                    type="text"
+                    name="phone"
+                    placeholder='Vui lòng nhập số điện thoại'
+                />
+                <label>Địa chỉ:</label>
+                <input 
+                    type="text"
+                    name="address"
+                    placeholder='Vui lòng nhập địa chỉ'
                 />
                 <label>Mật khẩu:</label>
                 <input 

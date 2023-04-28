@@ -47,13 +47,13 @@ exports.getRegisterPage = (req, res) => {
 exports.registerUser = async (req, res) => {
     try {
         // lấy thông tin gửi lên
-        const { email, name, password, confirmPassword } = req.body;
+        const { email, name, phone, address, password, confirmPassword } = req.body;
         console.log(req.body);
         // validate thông tin
-        if ( !email || !name || !password || !confirmPassword ) {
+        if ( !email || !name || !phone || !address || !password || !confirmPassword ) {
             return res.render('user/register', 
                 { 
-                    error: 'Bạn phait nhập đầy đủ thông tin!'
+                    error: 'Bạn phải nhập đầy đủ thông tin!'
                 }
             );
         }

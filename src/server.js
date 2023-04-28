@@ -37,10 +37,6 @@ ConnectDB(process.env.CONNECTION_STRING);
 // tạo routes
 routes(app);
 
-app.get('/', (req, res) => {
-    res.render('user/login.ejs');
-})
-
 app.listen(port, () => {
     console.log('listening on port ' + port);
 });
