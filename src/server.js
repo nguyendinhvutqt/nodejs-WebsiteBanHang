@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
+const flash = require('connect-flash');
 const session = require('express-session');
 
 
@@ -26,6 +27,9 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: false }
 }));
+
+// Sử dụng flash
+app.use(flash());
 
 // cấu hình ejs
 app.set('view engine', 'ejs');

@@ -16,7 +16,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
-                          <li class="breadcrumb-item active" aria-current="page">Danh mục sản phẩm</li>
+                          <li class="breadcrumb-item active" aria-current="page">Danh sách sản phẩm</li>
                         </ol>
                       </nav>
                     <div class="col-xl-12">
@@ -28,28 +28,48 @@
                               </button>
                             </div>
                           <% } %>
-                        <h4>DANH MỤC SẢN PHẨM</h4>
-                        <a class="btn btn-primary mt-2" href="/admin/category/add-category">Thêm mới</a>
+                        <h4>DANH SÁCH SẢN PHẨM</h4>
+                        <a class="btn btn-primary mt-2" href="/admin/product/add-product">Thêm mới</a>
                     </div>
-                    <div class="col-xl-12">
+                    <div class="col-xl-12 table-responsive">
                         <table class="table table-hover mt-3">
                             <thead>
                               <tr>
-                                <th class="col-1">STT</th>
-                                <th class="col-8">Tên danh mục</th>
-                                <th class="col-3"></th>
+                                <th>STT</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Mô tả</th>
+                                <th>Hình ảnh</th>
+                                <th>Tên danh mục</th>
+                                <th></th>
                               </tr>
                             </thead>
                             <tbody>
+                                <tr><td></td></tr>
                                 <% 
                                 let i = 1
-                                categories.forEach((category) => { %>
+                                products.forEach((item) => { %>
                                     <tr>
                                         <td><%= i %></td>
-                                        <td><%= category.name %></td>
+                                        <td><%= item.name %></td>
+                                        <td><%= item.price %></td>
+                                        <td><%= item.countInStock %></td>
+                                        <td><%= item.description %></td>
+                                        <td><img style="width: 100px; height: 100px; overflow: hidden" src="/images/products/<%= item.image %>" alt="image"></td>
+                                        <td><%= item.category.name %></td>
                                         <td class="text-center">
-                                            <a href="/admin/category/edit-category/<%= category._id %>" class="btn btn-primary mt-1">Sửa</a>
-                                            <a href="/admin/category/delete-category/<%= category._id %>" class="btn btn-primary mt-1 del" onclick="return confirmDelete()">Xoá</a>
+                                            <a 
+                                                href="/admin/product/edit-product/<%= item._id %>" 
+                                                class="btn btn-primary mt-1">
+                                                Sửa
+                                                </a>
+                                            <a 
+                                                href="/admin/product/delete-product/<%= item._id %>" 
+                                                class="btn btn-primary mt-1 del" 
+                                                onclick="return confirmDelete()">
+                                                Xoá
+                                            </a>
                                         </td>
                                     </tr>
                                 <% 

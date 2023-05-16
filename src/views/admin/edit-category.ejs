@@ -21,12 +21,15 @@
                         </ol>
                       </nav>
                     <div class="col-xl-12">
-                        <h4>SỬA DANH MỤC</h4>
                         <% if (error) { %>
-                            <div class="text-danger mt-3" role="alert">
-                              <%= error %>
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                              <strong><%= error %></strong>
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
                             </div>
-                          <% } %>
+                        <% } %>
+                        <h4>SỬA DANH MỤC</h4>
                     </div>
                     <div class="col-xl-12">
                         <form class="form-horizontal" action="/admin/category/edit-category/<%= category._id %>" method="post">

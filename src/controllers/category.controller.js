@@ -1,8 +1,32 @@
 const Category = require('../models/category.model');
 
 exports.getCategory = async (req, res) => {
-    const categories = await Category.find();
-    return res.render('admin/category', { categories, error: '' });
+    // lấy số danh mục mỗi trang
+    const limit = req.query.limit ? parseInt(req.query.limit) : 2;
+
+    // lấy số trang
+    const page = req.query.page ? parseInt(req.query.page) : 1;
+
+    // vị trí bắt đầu lấy sản phẩm trong đb
+    const skip = (page - 1) * limit;
+
+    // lấy tổng số danh mục
+    const count = await Category.count();
+
+    // tổng số trang
+    const totalPages = Math.ceil(count / limit);
+
+
+    const categories = await Category.find().skip(skip).limit(limit).exec();
+    const message = req.flash('success')[0];
+    // return res.render('admin/category', { categories, error: '' });
+    return res.render('admin/category', {
+        currentPage: page,
+        totalPages: totalPages,
+        limit: limit,
+        categories: categories,
+        message
+    });
 }
 
 exports.getAddCategory = async (req, res) => {
@@ -27,7 +51,8 @@ exports.addCategory = async (req, res) => {
     // tạo danh mục mới
     const category = new Category({ name: name});
     await category.save();
-    return res.redirect('/admin/category');
+    req.flash('success', 'Tạo mới danh mục sản phẩm thành công')
+    return res.redirect('/admin/category/1');
 }
 
 exports.getEditCategory = async (req, res) => {
@@ -49,14 +74,14 @@ exports.editCategory = async (req, res) => {
 
     // kiểm tra tên danh mục tồn tại chưa
     const isExistCategory = await Category.findOne({ name, _id: {$ne: categoryId }});
-    console.log(isExistCategory);
     if (isExistCategory) {
-        return res.render('admin/edit-category', { category, error: 'Tên danh mục đã tồn tại'});
+        return res.render('admin/add-category', { category, error: 'Tên danh mục đã tồn tại'});
     }
 
     category.name = name;
     await category.save();
-    return res.redirect('/admin/category')
+    req.flash('success', 'Cập nhật danh mục sản phẩm thành công')
+    return res.redirect('/admin/category/1')
 }
 
 exports.delCategory = async (req, res) => {
@@ -71,6 +96,7 @@ exports.delCategory = async (req, res) => {
     }
 
     await Category.findByIdAndDelete({_id: categoryId});
-    return res.redirect('/admin/category');
+    req.flash('success', 'Xoá danh mục sản phẩm thành công')
+    return res.redirect('/admin/category/1');
 
 }
