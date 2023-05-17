@@ -32,7 +32,7 @@ exports.loginUser = async (req, res) => {
     if (user && bcrypt.compareSync(password, user.password)) {
         req.session.isLoggedIn = true;
         req.session.user = user;
-        return res.redirect('home');
+        return res.redirect('/');
     } else {
         return res.render('user/login', 
             { error: 'Email hoặc mật khẩu không chính xác!' }

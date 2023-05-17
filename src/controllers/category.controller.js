@@ -52,7 +52,7 @@ exports.addCategory = async (req, res) => {
     const category = new Category({ name: name});
     await category.save();
     req.flash('success', 'Tạo mới danh mục sản phẩm thành công')
-    return res.redirect('/admin/category/1');
+    return res.redirect('/admin/category');
 }
 
 exports.getEditCategory = async (req, res) => {
@@ -75,13 +75,13 @@ exports.editCategory = async (req, res) => {
     // kiểm tra tên danh mục tồn tại chưa
     const isExistCategory = await Category.findOne({ name, _id: {$ne: categoryId }});
     if (isExistCategory) {
-        return res.render('admin/add-category', { category, error: 'Tên danh mục đã tồn tại'});
+        return res.render('admin/edit-category', { category, error: 'Tên danh mục đã tồn tại'});
     }
 
     category.name = name;
     await category.save();
     req.flash('success', 'Cập nhật danh mục sản phẩm thành công')
-    return res.redirect('/admin/category/1')
+    return res.redirect('/admin/category')
 }
 
 exports.delCategory = async (req, res) => {
@@ -97,6 +97,6 @@ exports.delCategory = async (req, res) => {
 
     await Category.findByIdAndDelete({_id: categoryId});
     req.flash('success', 'Xoá danh mục sản phẩm thành công')
-    return res.redirect('/admin/category/1');
+    return res.redirect('/admin/category');
 
 }

@@ -15,7 +15,7 @@
                 <div class="container">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/home">Trang chủ</a></li>
                           <li class="breadcrumb-item active" aria-current="page">Danh sách sản phẩm</li>
                         </ol>
                       </nav>
@@ -47,15 +47,18 @@
                             </thead>
                             <tbody>
                                 <tr><td></td></tr>
-                                <% 
+                                <%
+                                function formatCurrency(number) {
+                                    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number);
+                                }
                                 let i = 1
                                 products.forEach((item) => { %>
                                     <tr>
                                         <td><%= i %></td>
-                                        <td><%= item.name %></td>
-                                        <td><%= item.price %></td>
+                                        <td><p class="truncate"><%= item.name %></p></td>
+                                        <td><%= formatCurrency(item.price) %></td>
                                         <td><%= item.countInStock %></td>
-                                        <td><%= item.description %></td>
+                                        <td><p class="truncate"><%= item.description %></p></td>
                                         <td><img style="width: 100px; height: 100px; overflow: hidden" src="/images/products/<%= item.image %>" alt="image"></td>
                                         <td><%= item.category.name %></td>
                                         <td class="text-center">

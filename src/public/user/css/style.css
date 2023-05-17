@@ -1214,15 +1214,31 @@ Version:1.0
 }
 .hero-slider .single-slider {
 	height: auto;
-	background-image: url('https://via.placeholder.com/1900x700');
+	background-image: url('/images/banner/banner.jpg');
 	background-size: cover;
-	background-position: center;
+	background-position: center center;
 	background-repeat: no-repeat;
     height: 510px;
 }
-.hero-slider .text-inner {
-	
-}
+
+.card-container {
+	width: 100%; /* Chiều rộng của container */
+	overflow-x: scroll; /* Cho phép cuộn ngang */
+	white-space: nowrap; /* Ngăn các thẻ card xuống dòng */
+  }
+  
+  .card {
+	display: inline-block; /* Hiển thị các thẻ card cùng một hàng */
+	width: 200px; /* Đặt chiều rộng tùy ý */
+	height: 150px; /* Đặt chiều cao tùy ý */
+	margin-right: 10px; /* Khoảng cách giữa các thẻ card */
+	background-color: #f2f2f2;
+	border: 1px solid #ccc;
+	padding: 10px;
+  }
+  
+  
+
 .hero-slider .hero-text {
 	padding: 0 30px;
 	margin-top:100px;
@@ -1665,7 +1681,9 @@ Version:1.0
   right: 40px;
   top: 0;
 }
-.most-popular .single-product{
+
+.most-popular .single-product {
+	
 	margin:50px 15px 0 15px;
 }
 /* Slider Nav */
@@ -1748,10 +1766,11 @@ Version:1.0
 .single-product{
 	margin-top:50px;
 }
+
 .single-product .product-img {
   position: relative;
   overflow: hidden;
-  cursor:pointer;
+  cursor: pointer;
 }
 .single-product .product-img a {
   display: block;
