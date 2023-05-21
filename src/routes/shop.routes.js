@@ -1,13 +1,27 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const Product = require('../models/product.model')
+const Product = require("../models/product.model");
+const {
+  getDetailsProduct,
+  addToCart,
+  removeProductFromCart,
+  getCart,
+} = require("../controllers/product.controller");
+const {
+  getOrderProducts,
+  orderProducts,
+} = require("../controllers/order.controller");
 
-router.get('/', async (req, res) => {
-    const newProducts = await Product.find().limit(3).sort({createdAt: 'desc'});
-    const products = await Product.find().limit(8);
-    console.log(products);
-    res.render('user/home', { newProducts, products })
-})
+router.get("/", async (req, res) => {
+  const newProducts = await Product.find().limit(3).sort({ createdAt: "desc" });
+  const products = await Product.find().limit(8);
+  res.render("user/home", { newProducts, products });
+});
 
+router.get("/product/:id", getDetailsProduct);
+router.post("/add-to-cart/", addToCart);
+router.get("/remove-product-from-cart/:id", removeProductFromCart);
+router.get("/cart", getCart);
+router.get("/order", getOrderProducts).post("/order", orderProducts);
 
-module.exports = router
+module.exports = router;

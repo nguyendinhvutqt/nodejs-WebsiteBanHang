@@ -4962,3 +4962,20 @@ Version:1.0
 /*=============================
 	End Footer CSS
 ===============================*/
+
+.quantity-control {
+	display: flex;
+	align-items: center;
+}
+
+.quantity-control input {
+	width: 40px;
+	text-align: center;
+}
+
+.quantity-control button {
+	padding: 5px 10px;
+	margin: 0 5px;
+	cursor: pointer;
+}
+
