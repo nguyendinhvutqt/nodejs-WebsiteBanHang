@@ -6,35 +6,46 @@ exports.getLoginPage = (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
-  // lấy thông tin gửi lên
-  const { email, password } = req.body;
+  try {
+    // lấy thông tin gửi lên
+    const { email, password } = req.body;
 
-  // validate thông tin
-  if (!email || !password) {
-    return res.render("user/login", {
-      error: "Bạn thông được để trống thông tin!",
-    });
-  }
+    // validate thông tin
+    if (!email || !password) {
+      return res.render("user/login", {
+        error: "Bạn thông được để trống thông tin!",
+      });
+    }
 
-  // kiểm tra email có hợp lệ không
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const isValidEmail = emailRegex.test(email);
-  if (!isValidEmail) {
-    return res.render("user/login", { error: "Email không hợp lệ!" });
-  }
+    // kiểm tra email có hợp lệ không
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValidEmail = emailRegex.test(email);
+    if (!isValidEmail) {
+      return res.render("user/login", { error: "Email không hợp lệ!" });
+    }
 
-  // tìm tài khoản trong db
-  const user = await User.findOne({ email: email });
+    // tìm tài khoản trong db
+    const user = await User.findOne({ email: email });
 
-  // kiểm tra email và mật khẩu có khớp trong db không
-  if (user && bcrypt.compareSync(password, user.password)) {
-    req.session.isLoggedIn = true;
-    req.session.user = user;
-    return res.redirect("/");
-  } else {
-    return res.render("user/login", {
-      error: "Email hoặc mật khẩu không chính xác!",
-    });
+    // kiểm tra email và mật khẩu có khớp trong db không
+    if (
+      user.isBlocked === false &&
+      bcrypt.compareSync(password, user.password)
+    ) {
+      req.session.isLoggedIn = true;
+      req.session.user = user;
+      if (user.role === "admin") {
+        return res.redirect("/admin/home");
+      } else {
+        return res.redirect("/");
+      }
+    } else {
+      return res.render("user/login", {
+        error: "Email hoặc mật khẩu không chính xác!",
+      });
+    }
+  } catch (error) {
+    return res.render("partials/user/error", { error: error.message });
   }
 };
 
@@ -99,9 +110,7 @@ exports.registerUser = async (req, res) => {
     await user.save();
     return res.render("user/login", { error: "" });
   } catch (error) {
-    res.render("user/register", {
-      error: "Đăng ký thất bại. Vui lòng thử lại.",
-    });
+    return res.render("partials/user/error", { error: error.message });
   }
 };
 
@@ -114,17 +123,21 @@ exports.logout = (req, res) => {
 };
 
 exports.getProfile = async (req, res) => {
-  // kiểm tra người dùng đã đăng nhập chưa
-  if (!req.session.isLoggedIn) {
-    return res.redirect("/user/sign-in");
+  try {
+    // kiểm tra người dùng đã đăng nhập chưa
+    if (!req.session.isLoggedIn) {
+      return res.redirect("/user/sign-in");
+    }
+
+    // lấy thông tin người dùng
+    const userId = req.session.user._id;
+    const infoUser = await User.findById(userId);
+
+    const message = req.flash("success")[0];
+    return res.render("user/profile", { infoUser, message });
+  } catch (error) {
+    return res.render("partials/user/error", { error: error.message });
   }
-
-  // lấy thông tin người dùng
-  const userId = req.session.user._id;
-  const infoUser = await User.findById(userId);
-
-  const message = req.flash("success")[0];
-  return res.render("user/profile", { infoUser, message });
 };
 
 exports.getChangePassword = (req, res) => {
@@ -136,71 +149,111 @@ exports.getChangePassword = (req, res) => {
 };
 
 exports.changePassword = async (req, res) => {
-  // kiểm tra người dùng đã đăng nhập chưa
-  if (!req.session.isLoggedIn) {
-    return res.redirect("/user/sign-in");
+  try {
+    // kiểm tra người dùng đã đăng nhập chưa
+    if (!req.session.isLoggedIn) {
+      return res.redirect("/user/sign-in");
+    }
+
+    // lấy thông tin người dùng gửi lên
+    const { password, newPassword, confirmNewPassword } = req.body;
+    const userId = req.session.user._id;
+
+    const user = await User.findById(userId);
+
+    // kiểm tra mật khẩu cũ có khớp không
+    const checkPassword = bcrypt.compareSync(password, user.password);
+    if (!checkPassword) {
+      return res.render("user/change-password", {
+        error: "Mật khẩu cũ không khớp",
+      });
+    }
+
+    // kiểm tra 2 mật khẩu mới có khớp không
+    if (newPassword !== confirmNewPassword) {
+      return res.render("/user/change-password", {
+        error: "Mật khẩu mới và nhập lại mật khẩu mới không khớp",
+      });
+    }
+
+    // mã hoá mật khẩu
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = bcrypt.hashSync(newPassword, salt);
+    await User.findByIdAndUpdate({ _id: userId }, { password: hashPassword });
+    req.flash("success", "Thay đổi mật khẩu thành công");
+    return res.redirect("/user/profile");
+  } catch (error) {
+    return res.render("partials/user/error", { error: error.message });
   }
-
-  // lấy thông tin người dùng gửi lên
-  const { password, newPassword, confirmNewPassword } = req.body;
-  const userId = req.session.user._id;
-
-  const user = await User.findById(userId);
-
-  // kiểm tra mật khẩu cũ có khớp không
-  const checkPassword = bcrypt.compareSync(password, user.password);
-  if (!checkPassword) {
-    return res.render("user/change-password", {
-      error: "Mật khẩu cũ không khớp",
-    });
-  }
-
-  // kiểm tra 2 mật khẩu mới có khớp không
-  if (newPassword !== confirmNewPassword) {
-    return res.render("/user/change-password", {
-      error: "Mật khẩu mới và nhập lại mật khẩu mới không khớp",
-    });
-  }
-
-  // mã hoá mật khẩu
-  const salt = await bcrypt.genSalt(10);
-  const hashPassword = bcrypt.hashSync(newPassword, salt);
-  await User.findByIdAndUpdate({ _id: userId }, { password: hashPassword });
-  req.flash("success", "Thay đổi mật khẩu thành công");
-  return res.redirect("/user/profile");
 };
 
 exports.getChangeInfo = async (req, res) => {
-  if (!req.session.isLoggedIn) {
-    return res.redirect("/user/sign-in");
+  try {
+    if (!req.session.isLoggedIn) {
+      return res.redirect("/user/sign-in");
+    }
+    const userId = req.session.user._id;
+    const user = await User.findById(userId);
+    return res.render("user/change-Info", { user, error: "" });
+  } catch (error) {
+    return res.render("partials/user/error", { error: error.message });
   }
-  const userId = req.session.user._id;
-  const user = await User.findById(userId);
-  return res.render("user/change-Info", { user, error: "" });
 };
 
 exports.changeInfo = async (req, res) => {
-  if (!req.session.isLoggedIn) {
-    return res.redirect("/user/sign-in");
-  }
-  const { name, phone, address } = req.body;
-  const userId = req.session.user._id;
-  if (!name) {
-    const user = await User.findById(userId);
-    return res.render("user/change-info", {
-      user,
-      error: "Họ và tên không được để trống",
-    });
-  }
+  try {
+    if (!req.session.isLoggedIn) {
+      return res.redirect("/user/sign-in");
+    }
+    const { name, phone, address } = req.body;
+    const userId = req.session.user._id;
+    if (!name) {
+      const user = await User.findById(userId);
+      return res.render("user/change-info", {
+        user,
+        error: "Họ và tên không được để trống",
+      });
+    }
 
-  const updateUser = await User.findByIdAndUpdate(
-    { _id: userId },
-    { name, phone, address },
-    { new: true }
-  );
-  req.session.user = updateUser;
-  req.flash("success", "Thay đổi thông tin thành công");
-  return res.redirect("/user/profile");
+    const updateUser = await User.findByIdAndUpdate(
+      { _id: userId },
+      { name, phone, address },
+      { new: true }
+    );
+    req.session.user = updateUser;
+    req.flash("success", "Thay đổi thông tin thành công");
+    return res.redirect("/user/profile");
+  } catch (error) {
+    return res.render("partials/user/error", { error: error.message });
+  }
 };
 
+exports.getAllUser = async (req, res) => {
+  try {
+    const users = await User.find();
+    const message = req.flash("success")[0];
+    return res.render("admin/users", { users, message });
+  } catch (error) {
+    return res.render("partials/user/error", { error: error.message });
+  }
+};
 
+exports.blockUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const user = await User.findById(userId);
+
+    if (user.isBlocked) {
+      user.isBlocked = false;
+      req.flash("success", "Mở chặn tài khoản người dùng thành công");
+    } else {
+      user.isBlocked = true;
+      req.flash("success", "Chặn tài khoản người dùng thành công");
+    }
+    await user.save();
+    return res.redirect("/admin/users");
+  } catch (error) {
+    return res.render("partials/user/error", { error: error.message });
+  }
+};

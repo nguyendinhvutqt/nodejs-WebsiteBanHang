@@ -15,18 +15,20 @@
         <div class="col-lg-2 col-md-2 col-12">
           <!-- Logo -->
           <div class="logo">
-            <a href="index.html"><img src="images/logo.png" alt="logo"></a>
+            <a href="/"><img style='height: 50px' src="images/logo/logo.jpg" alt="logo"></a>
           </div>
           <!--/ End Logo -->
           <!-- Search Form -->
           <div class="search-top">
             
-            <div class="top-search"><a href="#0"><i class="ti-search"></i></a></div>
+            <div class="top-search"><p><i class="ti-search"></i></p></div>
             <!-- Search Form -->
             <div class="search-top">
-              <form class="search-form">
-                <input type="text" placeholder="Search here..." name="search">
-                <button value="search" type="submit"><i class="ti-search"></i></button>
+              <form action="/products" class="search-form">
+                <div>
+                  <input name="name" placeholder="Tìm kiếm sản phẩm" type="search">
+                  <button class="btnn bg-white ml-0"><i class="ti-search"></i></button>
+                </div>
               </form>
             </div>
             <!--/ End Search Form -->
@@ -36,15 +38,10 @@
         </div>
         <div class="col-lg-8 col-md-7 col-12">
           <div class="search-bar-top">
-            <div class="search-bar">
-              <select>
-                <option>Tên sản phẩm</option>
-              </select>
-              <form>
-                <input name="search" placeholder="Tìm kiếm sản phẩm" type="search">
+            <form action="/products" class="search-bar">
+                <input class="w-100" name="name" placeholder="Tìm kiếm sản phẩm" type="search">
                 <button class="btnn"><i class="ti-search"></i></button>
-              </form>
-            </div>
+            </form>
           </div>
         </div>
         <div class="col-lg-2 col-md-3 col-12">
@@ -83,10 +80,10 @@
             <div class="sinlge-bar shopping">
               <a href="#" class="single-icon"><i class="ti-bag"></i> <span class="total-count"><%- countItem %></span></a>
               <!-- Shopping Item -->
-                <div class="shopping-item">
+                <div style="height: 450px; overflow-y: scroll" class="shopping-item">
                   <div class="dropdown-cart-header">
-                    <span><%- countItem %> Items</span>
-                    <a href="/cart">View Cart</a>
+                    <span><%- countItem %> Sản phẩm</span>
+                    <a href="/cart">Xem giỏ hàng</a>
                   </div>
                   <ul class="shopping-list">
                     <% cart.forEach((item) => { 
@@ -102,10 +99,10 @@
                   </ul>
                   <div class="bottom">
                     <div class="total">
-                      <span>Total</span>
+                      <span>Tổng tiền</span>
                       <span class="total-amount"><%- formatCurrency(sumMoney) %></span>
                     </div>
-                    <a href="checkout.html" class="btn animate">Checkout</a>
+                    <a href="/order" class="btn animate">THANH TOÁN</a>
                   </div>
                 </div>
                 <!--/ End Shopping Item -->
@@ -116,17 +113,17 @@
                   <!-- Shopping Item -->
                     <div class="shopping-item">
                       <div class="dropdown-cart-header">
-                        <span>0 Items</span>
-                        <a href="/cart">View Cart</a>
+                        <span>0 Sản phẩm</span>
+                        <a href="/cart">Xem giỏ hàng</a>
                       </div>
                       <ul class="shopping-list">
                       </ul>
                       <div class="bottom">
                         <div class="total">
-                          <span>Total</span>
+                          <span>Tổng tiền</span>
                           <span class="total-amount">0</span>
                         </div>
-                        <a href="checkout.html" class="btn animate">Checkout</a>
+                        <a href="/order" class="btn animate">THANH TOÁN</a>
                       </div>
                     </div>
                     <!--/ End Shopping Item -->
@@ -149,9 +146,9 @@
                 <div class="navbar-collapse">	
                   <div class="nav-inner">	
                     <ul class="nav main-menu menu navbar-nav">
-                        <li class="active"><a href="/">Home</a></li>
-                        <li><a href="#">Product</a></li>												
-                        <li><a href="#">Service</a></li>
+                        <li class="<%- currentPage === '/' ? 'active' : '' %>"><a href="/">Home</a></li>
+                        <li class="<%- currentPage === '/products' ? 'active' : '' %>"><a href="/products">Product</a></li>												
+                        <!-- <li><a href="#">Service</a></li>
                         <li><a href="#">Shop<i class="ti-angle-down"></i><span class="new">New</span></a>
                           <ul class="dropdown">
                             <li><a href="shop-grid.html">Shop Grid</a></li>
@@ -165,7 +162,7 @@
                             <li><a href="blog-single-sidebar.html">Blog Single Sidebar</a></li>
                           </ul>
                         </li>
-                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li> -->
                       </ul>
                   </div>
                 </div>

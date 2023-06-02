@@ -18,10 +18,9 @@
 							<div class="row">
 								<div class="col-lg-7 col-12">
 									<div class="hero-text">
-										<h1><span>UP TO 50% OFF </span>Shirt For Man</h1>
-										<p>Maboriosam in a nesciung eget magnae <br> dapibus disting tloctio in the find it pereri <br> odiy maboriosm.</p>
+										<h1>LAPTOP STORE</h1>
 										<div class="button">
-											<a href="#" class="btn">Shop Now!</a>
+											<a href="/products" class="btn">Shop Now!</a>
 										</div>
 									</div>
 								</div>
@@ -77,8 +76,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="product-info">
-                        <div class="nav-main">
-                            <!-- Tab Nav -->
+                        <!-- <div class="nav-main">
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#man" role="tab">Man</a></li>
                                 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#women" role="tab">Woman</a></li>
@@ -87,8 +85,7 @@
                                 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#essential" role="tab">Essential</a></li>
                                 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#prices" role="tab">Prices</a></li>
                             </ul>
-                            <!--/ End Tab Nav -->
-                        </div>
+                        </div> -->
                         <div class="tab-content" id="myTabContent">
                             <!-- Start Single Tab -->
                             <div class="tab-pane fade show active" id="man" role="tabpanel">
@@ -107,9 +104,12 @@
                                                                 <img class="hover-img" style="width: 100%; height:200px;" src="/images/products/<%- item.image %>" alt="#">
                                                             </a>
                                                             <div class="button-head">
-                                                                <div class="product-action-2">
-                                                                    <a title="Add to cart" href="#">Add to cart</a>
-                                                                </div>
+                                                                <form method="post" action="/add-to-cart">
+                                                                    <div class="product-action-2">
+                                                                        <input type="hidden" name="productId" value="<%- item._id %>" />
+                                                                        <button type="submit">Thêm vào giỏ hàng</button>
+                                                                    </div>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </div>

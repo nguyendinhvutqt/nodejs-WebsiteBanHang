@@ -30,8 +30,8 @@ const orderSchema = new mongoose.Schema({
   paidAt: { type: Date },
   status: {
     type: String,
-    enum: ["Pending", "Processing", "Shipped", "Delivered"],
-    default: "Pending",
+    enum: ["Đang chờ duyệt", "Đang giao", "Đã giao", "Đã huỷ"],
+    default: "Đang chờ duyệt",
   },
   createdAt: { type: Date, default: Date.now },
 });
