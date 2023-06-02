@@ -2,15 +2,22 @@
 
 ## Công nghệ sử dụng
 
-nodejs
-express
-mongodb
-ejs
+### nodejs
 
-### Chạy Project
+### express
 
-B1: git clone https://github.com/nguyendinhvutqt/nodejs-WebsiteBanHang.git
-B2: cd 'name_project'
-B3: npm start
+### mongodb
+
+### ejs
+
+## Chạy Project
+
+### B1: git clone https://github.com/nguyendinhvutqt/nodejs-WebsiteBanHang.git
+
+### B2: cd 'name_project'
+
+### B3: npm i
+
+### B4: npm start
 
 #### Website đang trong quá trình phát triển nên các chức năng còn thiếu sẽ được update sau
