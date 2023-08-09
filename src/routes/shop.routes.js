@@ -28,7 +28,8 @@ router.get("/product/:id", getDetailsProduct);
 router.post("/add-to-cart/", addToCart);
 router.get("/remove-product-from-cart/:id", removeProductFromCart);
 router.get("/cart", getCart);
-router.get("/order", getOrderProducts).post("/order", orderProducts);
+router.get("/order", getOrderProducts);
+router.post("/order", orderProducts);
 router.get("/search", search);
 
 module.exports = router;

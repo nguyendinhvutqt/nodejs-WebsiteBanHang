@@ -296,11 +296,11 @@ exports.getCart = async (req, res) => {
 
 exports.getProductPageUser = async (req, res) => {
   try {
-    const { type, name } = req.query;
+    const { type, name, min, max } = req.query;
     const categories = await Category.find();
     let products = [];
 
-    if (!type && !name) {
+    if (!type && !name && !min && !max) {
       products = await Product.find();
     }
 
@@ -313,6 +313,18 @@ exports.getProductPageUser = async (req, res) => {
       products = await Product.find({
         name: { $regex: name, $options: "i" },
       });
+    }
+
+    if (min && max) {
+      products = await Product.find({ price: { $gt: min, $lt: max } });
+    }
+
+    if (min && !max) {
+      products = await Product.find({ price: { $gt: min } });
+    }
+
+    if (!min && max) {
+      products = await Product.find({ price: { $lt: max } });
     }
 
     if (products.length === 0) {

@@ -1,11 +1,11 @@
 <style>
   .truncate {
-	display: -webkit-box;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	-webkit-line-clamp: 2; /* Số dòng tối đa */
-}
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2; /* Số dòng tối đa */
+  }
 </style>
 <!-- Header -->
 <header class="header shop">
@@ -15,19 +15,28 @@
         <div class="col-lg-2 col-md-2 col-12">
           <!-- Logo -->
           <div class="logo">
-            <a href="/"><img style='height: 50px' src="images/logo/logo.jpg" alt="logo"></a>
+            <a href="/"
+              ><img style="height: 50px" src="images/logo/logo.jpg" alt="logo"
+            /></a>
           </div>
           <!--/ End Logo -->
           <!-- Search Form -->
           <div class="search-top">
-            
-            <div class="top-search"><p><i class="ti-search"></i></p></div>
+            <div class="top-search">
+              <p><i class="ti-search"></i></p>
+            </div>
             <!-- Search Form -->
             <div class="search-top">
               <form action="/products" class="search-form">
                 <div>
-                  <input name="name" placeholder="Tìm kiếm sản phẩm" type="search">
-                  <button class="btnn bg-white ml-0"><i class="ti-search"></i></button>
+                  <input
+                    name="name"
+                    placeholder="Tìm kiếm sản phẩm"
+                    type="search"
+                  />
+                  <button class="btnn bg-white ml-0">
+                    <i class="ti-search"></i>
+                  </button>
                 </div>
               </form>
             </div>
@@ -39,8 +48,13 @@
         <div class="col-lg-8 col-md-7 col-12">
           <div class="search-bar-top">
             <form action="/products" class="search-bar">
-                <input class="w-100" name="name" placeholder="Tìm kiếm sản phẩm" type="search">
-                <button class="btnn"><i class="ti-search"></i></button>
+              <input
+                class="w-100"
+                name="name"
+                placeholder="Tìm kiếm sản phẩm"
+                type="search"
+              />
+              <button class="btnn"><i class="ti-search"></i></button>
             </form>
           </div>
         </div>
@@ -50,85 +64,109 @@
             <div class="sinlge-bar shopping">
               <!-- Shopping Item -->
               <% if (currentUser) { %>
-                <p class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></p>
-                <div class="shopping-item">
-                    <span>Xin chào, <%= currentUser.name %></span>
-                    <ul class="main-category">
-                      <li><a href="/user/profile">Thông tin cá nhân</a></li>
-                      <li><a href="/user/logout">Đăng xuất</a></li>
-                    </ul>
-                </div>
-                <% } else { %>
-                  <a href="#" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
-                  <div class="shopping-item">
-                      <span>Xin chào</span>
-                      <ul class="main-category">
-                        <li><a href="/user/sign-in">Đăng nhập</a></li>
-                        <li><a href="/user/sign-up">Đăng ký</a></li>
-                      </ul>
-                  </div>
-                <% } %> 
-                
-              <!--/ End Shopping Item -->
-            </div>
-            <% if (cart) {
-              let sumMoney = 0;
-              function formatCurrency(number) {
-                return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number);
-              }
-              const countItem = cart.length; %>
-            <div class="sinlge-bar shopping">
-              <a href="#" class="single-icon"><i class="ti-bag"></i> <span class="total-count"><%- countItem %></span></a>
-              <!-- Shopping Item -->
-                <div style="height: 450px; overflow-y: scroll" class="shopping-item">
-                  <div class="dropdown-cart-header">
-                    <span><%- countItem %> Sản phẩm</span>
-                    <a href="/cart">Xem giỏ hàng</a>
-                  </div>
-                  <ul class="shopping-list">
-                    <% cart.forEach((item) => { 
-                      sumMoney += item.quantity * item.price;
-                      %>
-                      <li>
-                        <a href="/remove-product-from-cart/<%- item.productId %>" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-                        <p class="cart-img"><img src="/images/products/<%- item.image %>" alt="image"></p>
-                        <h4><p class="truncate"><%- item.name %></p></h4>
-                        <p class="quantity"><%- item.quantity %> X <span class="amount"><%- formatCurrency(item.price) %></span></p>
-                      </li>
-                    <% }) %>
-                  </ul>
-                  <div class="bottom">
-                    <div class="total">
-                      <span>Tổng tiền</span>
-                      <span class="total-amount"><%- formatCurrency(sumMoney) %></span>
-                    </div>
-                    <a href="/order" class="btn animate">THANH TOÁN</a>
-                  </div>
-                </div>
-                <!--/ End Shopping Item -->
+              <p class="single-icon">
+                <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+              </p>
+              <div class="shopping-item">
+                <span>Xin chào, <%= currentUser.name %></span>
+                <ul class="main-category">
+                  <li><a href="/user/profile">Thông tin cá nhân</a></li>
+                  <li><a href="/user/logout">Đăng xuất</a></li>
+                </ul>
               </div>
               <% } else { %>
-                <div class="sinlge-bar shopping">
-                  <a href="#" class="single-icon"><i class="ti-bag"></i> <span class="total-count">0</span></a>
-                  <!-- Shopping Item -->
-                    <div class="shopping-item">
-                      <div class="dropdown-cart-header">
-                        <span>0 Sản phẩm</span>
-                        <a href="/cart">Xem giỏ hàng</a>
-                      </div>
-                      <ul class="shopping-list">
-                      </ul>
-                      <div class="bottom">
-                        <div class="total">
-                          <span>Tổng tiền</span>
-                          <span class="total-amount">0</span>
-                        </div>
-                        <a href="/order" class="btn animate">THANH TOÁN</a>
-                      </div>
-                    </div>
-                    <!--/ End Shopping Item -->
-                  </div>
+              <a href="#" class="single-icon"
+                ><i class="fa fa-user-circle-o" aria-hidden="true"></i
+              ></a>
+              <div class="shopping-item">
+                <span>Xin chào</span>
+                <ul class="main-category">
+                  <li><a href="/user/sign-in">Đăng nhập</a></li>
+                  <li><a href="/user/sign-up">Đăng ký</a></li>
+                </ul>
+              </div>
               <% } %>
+
+              <!--/ End Shopping Item -->
+            </div>
+            <% if (cart) { let sumMoney = 0; function formatCurrency(number) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency:
+            'VND' }).format(number); } const countItem = cart.length; %>
+            <div class="sinlge-bar shopping">
+              <a href="#" class="single-icon"
+                ><i class="ti-bag"></i>
+                <span class="total-count"><%- countItem %></span></a
+              >
+              <!-- Shopping Item -->
+              <div
+                style="height: 450px; overflow-y: scroll"
+                class="shopping-item"
+              >
+                <div class="dropdown-cart-header">
+                  <span><%- countItem %> Sản phẩm</span>
+                  <a href="/cart">Xem giỏ hàng</a>
+                </div>
+                <ul class="shopping-list">
+                  <% cart.forEach((item) => { sumMoney += item.quantity *
+                  item.price; %>
+                  <li>
+                    <a
+                      href="/remove-product-from-cart/<%- item.productId %>"
+                      class="remove"
+                      title="Remove this item"
+                      ><i class="fa fa-remove"></i
+                    ></a>
+                    <p class="cart-img">
+                      <img
+                        src="/images/products/<%- item.image %>"
+                        alt="image"
+                      />
+                    </p>
+                    <h4><p class="truncate"><%- item.name %></p></h4>
+                    <p class="quantity">
+                      <%- item.quantity %> X
+                      <span class="amount"
+                        ><%- formatCurrency(item.price) %></span
+                      >
+                    </p>
+                  </li>
+                  <% }) %>
+                </ul>
+                <div class="bottom">
+                  <div class="total">
+                    <span>Tổng tiền</span>
+                    <span class="total-amount"
+                      ><%- formatCurrency(sumMoney) %></span
+                    >
+                  </div>
+                  <a href="/order" class="btn animate">THANH TOÁN</a>
+                </div>
+              </div>
+              <!--/ End Shopping Item -->
+            </div>
+            <% } else { %>
+            <div class="sinlge-bar shopping">
+              <a href="#" class="single-icon"
+                ><i class="ti-bag"></i> <span class="total-count">0</span></a
+              >
+              <!-- Shopping Item -->
+              <div class="shopping-item">
+                <div class="dropdown-cart-header">
+                  <span>0 Sản phẩm</span>
+                  <a href="/cart">Xem giỏ hàng</a>
+                </div>
+                <ul class="shopping-list"></ul>
+                <div class="bottom">
+                  <div class="total">
+                    <span>Tổng tiền</span>
+                    <span class="total-amount">0</span>
+                  </div>
+                  <a href="/order" class="btn animate">THANH TOÁN</a>
+                </div>
+              </div>
+              <!--/ End Shopping Item -->
+            </div>
+            <% } %>
           </div>
         </div>
       </div>
@@ -143,12 +181,18 @@
             <div class="menu-area">
               <!-- Main Menu -->
               <nav class="navbar navbar-expand-lg">
-                <div class="navbar-collapse">	
-                  <div class="nav-inner">	
+                <div class="navbar-collapse">
+                  <div class="nav-inner">
                     <ul class="nav main-menu menu navbar-nav">
-                        <li class="<%- currentPage === '/' ? 'active' : '' %>"><a href="/">Home</a></li>
-                        <li class="<%- currentPage === '/products' ? 'active' : '' %>"><a href="/products">Product</a></li>												
-                        <!-- <li><a href="#">Service</a></li>
+                      <li class="<%- currentPage === '/' ? 'active' : '' %>">
+                        <a href="/">Home</a>
+                      </li>
+                      <li
+                        class="<%- currentPage === '/products' ? 'active' : '' %>"
+                      >
+                        <a href="/products">Product</a>
+                      </li>
+                      <!-- <li><a href="#">Service</a></li>
                         <li><a href="#">Shop<i class="ti-angle-down"></i><span class="new">New</span></a>
                           <ul class="dropdown">
                             <li><a href="shop-grid.html">Shop Grid</a></li>
@@ -163,11 +207,11 @@
                           </ul>
                         </li>
                         <li><a href="contact.html">Contact Us</a></li> -->
-                      </ul>
+                    </ul>
                   </div>
                 </div>
               </nav>
-              <!--/ End Main Menu -->	
+              <!--/ End Main Menu -->
             </div>
           </div>
         </div>
@@ -176,4 +220,4 @@
   </div>
   <!--/ End Header Inner -->
 </header>
-<!--/ End Header --> 
+<!--/ End Header -->
